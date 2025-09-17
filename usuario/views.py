@@ -13,28 +13,22 @@ def cadastrar(request):
         nome = request.POST.get('nome')
         username = request.POST.get('username')
         senha = request.POST.get('senha')
-        tipo = request.POST.get('tipo')
 
         user = User.objects.filter(username=username)
 
         if user.exists():
             messages.error(request, 'Já existe um usuário com esse username!')
             return redirect('/usuario/cadastrar')
-        try:
-            user = User.objects.create_user(username=username, password=senha)
-            user.first_name = nome
-            user.save()
-            
-            perfil = user.perfil
-            perfil.nome_completo = nome
-            perfil.tip = tipo
-            perfil.save()
-            
-            messages.success(request, 'Cadastro realizado com sucesso!')
-            return redirect('/usuario/login')
-        except:
-            messages.error(request, 'Erro ao cadastrar!')
-            return redirect('/usuario/cadastrar')
+        
+        user = User.objects.create_user(username=username, password=senha)
+        user.first_name = nome
+        user.save()
+        
+        Perfil.objects.create(user=user, nome_completo=nome)
+        
+        messages.success(request, 'Cadastro realizado com sucesso!')
+        return redirect('/usuario/login')
+        
 
 
 def login(request):
@@ -42,6 +36,7 @@ def login(request):
         if request.user.is_authenticated:
             return redirect('/')
         return render(request, 'login.html')
+    
     elif request.method == "POST":
         username = request.POST.get('username')
         senha = request.POST.get('senha')
@@ -54,6 +49,30 @@ def login(request):
             auth.login(request, usuario)
             return redirect('/')
 
+def login_adm(request):
+    if request.method == "GET":
+        if request.user.is_authenticated:
+            return redirect('/')
+        return render(request, 'login_adm.html')
+
+    elif request.method == "POST":
+        username = request.POST.get('username')
+        senha = request.POST.get('senha')
+
+        usuario = auth.authenticate(username=username, password=senha)
+
+        if not usuario:
+            messages.error(request, 'Username ou senha inválidos!')
+            return redirect('/usuario/login_adm')
+
+        if not usuario.perfil.adm:
+            messages.error(request, 'Este usuário não é administrador.')
+            return redirect('/usuario/login_adm')
+
+        auth.login(request, usuario)
+        return redirect('/home_adm')
+
+        
 
 def sair(request):
     auth.logout(request)

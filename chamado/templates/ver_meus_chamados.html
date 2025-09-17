@@ -1,0 +1,146 @@
+{% extends "modelo.html" %}
+
+{% block title %}Meus Chamados{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="fw-bold mb-0">Chamados de <span class="text-primary">{{ perfil.nome_completo }}</span></h1>
+    <a href="{% url 'fazer_chamado' %}" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-1"></i>
+        Novo
+    </a>
+</div>
+<hr>
+
+{% if qtd_ativos or qtd_cancelados or qtd_finalizados%}
+    {% if qtd_ativos %}
+        <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-lightning-charge-fill me-2 fs-3 text-warning"></i>
+            <h3 class="fw-bold mb-0">Ativos</h3>
+        </div>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Data do pedido</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-center">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in chamados %}
+                    {% if i.status != 'finalizado' and i.status != 'cancelado' %}
+                        <tr>
+                            <td>{{i.titulo}}</td>
+                            <td>{{i.data|date:'d/m/Y - H:i'}}</td>
+                            <td>{{i.descricao}}</td>
+                            <td><span class="badge bg-warning text-dark">{{ i.get_status_display }}</span></td>
+                            <td class="text-center">
+                                <a href="{% url 'editar_chamado' i.id %}" class="btn btn-sm btn-success">Editar</a>
+                                <form action="{% url 'cancelar_chamado' i.id %}" method="post" class="d-inline"
+                                    onsubmit="return confirmarExclusao('{{ i.titulo}}');">{% csrf_token %}
+                                    <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="text-center">
+            <i class="bi bi-exclamation-circle fs-1 text-muted"></i>
+            <p>Nenhum chamado ativo</p>
+            <a class="btn btn-sm btn-success" href="{% url 'fazer_chamado' %}">Fazer chamado</a>
+        </div>
+        <hr>
+    {% endif %}
+
+    {% if qtd_finalizados != 0 %}
+        <br>
+        <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-clipboard2-check me-2 fs-3 text-success"></i>
+            <h3 class="fw-bold mb-0">Finalizados</h3>
+        </div> 
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Data do pedido</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in chamados %}
+                    {% if i.status == 'finalizado' %}
+                        <tr>
+                            <td>{{i.titulo}}</td>
+                            <td>{{i.data|date:'d/m/Y - H:i'}}</td>
+                            <td>{{i.descricao}}</td>
+                            <td><span class="badge bg-success">{{ i.get_status_display }}</span></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
+    {% if qtd_cancelados != 0 %}
+        <br>
+        <div class="d-flex align-items-center mb-3">
+            <i class="bi bi-x-octagon-fill me-2 fs-3 text-danger"></i>
+            <h3 class="fw-bold mb-0">Cancelados</h3>
+        </div>
+        <table class="table">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col">Titulo</th>
+                    <th scope="col">Data do pedido</th>
+                    <th scope="col">Descrição</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in chamados %}
+                    {% if i.status == 'cancelado' %}
+                        <tr class="text-decoration-line-through text-muted">
+                            <td>{{i.titulo}}</td>
+                            <td>{{i.data|date:'d/m/Y - H:i'}}</td>
+                            <td>{{i.descricao}}</td>
+                            <td><span class="badge bg-danger">{{ i.get_status_display }}</span></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    
+{% else %}
+    <div class="text-center">
+        <i class="bi bi-inbox-fill fs-1 text-secondary"></i>
+        <p>Nenhum chamado cadastrado</p>
+        <a class="btn btn-sm btn-success" href="{% url 'fazer_chamado' %}">Fazer chamado</a>
+    </div>
+{% endif %}
+
+<script>
+    function confirmarExclusao(nome) {
+        return confirm(`Tem certeza que deseja cancelar o chamado "${nome}"?`);
+    }
+</script>
+
+{% endblock %}
