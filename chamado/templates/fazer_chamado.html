@@ -19,12 +19,20 @@
         <h2 class="fw-bold mb-4 text-center">Abrir um Chamado</h2>
         <form action="{% url 'fazer_chamado' %}" method="POST">{% csrf_token %}
             <div class="mb-3">
-                <label for="id_titulo" class="form-label">Título</label>
-                <input type="text" id="id_titulo" name="titulo" class="form-control" placeholder="Digite o título" required>
+                <label class="form-label">Título</label>
+                <input type="text" name="titulo" class="form-control" placeholder="Digite o título" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Descrição</label>
+                <textarea name="descricao" class="form-control" rows="5" placeholder="Descreva o problema..." required></textarea>
             </div>
             <div class="mb-4">
-                <label for="id_descricao" class="form-label">Descrição</label>
-                <textarea id="id_descricao" name="descricao" class="form-control" rows="5" placeholder="Descreva o problema..." required></textarea>
+                <select name="responsavel" class="form-select" required>
+                    <option value="" disabled selected>Selecione um responsável pelo chamado</option>
+                    {% for i in perfil %}
+                        <option value="{{i.id}}">{{i.nome_completo}}</option>
+                    {% endfor %}
+                </select>
             </div>
             <div class="d-flex justify-content-between">
                 <button type="submit" class="btn btn-success px-3">Cadastrar</button>

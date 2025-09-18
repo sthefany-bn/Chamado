@@ -15,6 +15,18 @@
     </div>
 {% endif %}
 
+<div class="text-center">
+    <form method="get" action="">
+        <button type="submit" class="btn btn-primary px-5 me-2">Chamados</button>
+        <button type="submit" name="status" value="nao_iniciado" class="btn btn-info px-5 me-2">Não iniciado</button>
+        <button type="submit" name="status" value="em_andamento" class="btn btn-warning px-5 me-2">Em andamento</button>
+        <button type="submit" name="status" value="finalizado" class="btn btn-success px-5 me-2">Finalizado</button>
+        <button type="submit" name="status" value="cancelado" class="btn btn-danger px-5">Cancelado</button>
+    </form>
+</div>
+
+<br>
+
 <h1 class="fw-bold">Chamados</h1>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h6 class="mb-0">Quantidade: {{ quantidade }}</h6>
@@ -32,6 +44,7 @@
                 <th scope="col">Titulo</th>
                 <th scope="col">Data do pedido</th>
                 <th scope="col">Descrição</th>
+                <th scope="col">Responsável</th>
                 <th scope="col">Status</th>
                 <th scope="col">Autor</th>
             </tr>
@@ -40,9 +53,10 @@
             {% for i in chamados %}
             <tr>
                 <td>{{i.titulo}}</td>
-                <td>{{i.data|date:'d/m/Y'}}</td>
+                <td>{{i.data|date:'d/m/Y - H:i'}}</td>
                 <td>{{i.descricao}}</td>
-                <td>{{i.status}}</td>
+                <td>{{i.responsavel}}</td>
+                <td>{{i.get_status_display}}</td> <!--arrumar para deixar colorido-->
                 <td>{{i.autor}}</td>
             </tr>
             {% endfor %}

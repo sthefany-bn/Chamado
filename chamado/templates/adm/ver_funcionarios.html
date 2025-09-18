@@ -1,0 +1,75 @@
+{% extends "modelo.html" %}
+
+{% block title %}Funcionários{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<div class="text-center">
+    <form method="get" action="">
+        <button type="submit" class="btn btn-primary px-5">Todos</button>
+        <button type="submit" name="adm" value="False" class="btn btn-warning px-4">Funcionários</button>
+        <button type="submit" name="adm" value="True" class="btn btn-secondary px-3">Adiministradores</button>
+    </form>
+</div>
+
+<br>
+
+<h1 class="fw-bold">Funcionários</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h6 class="mb-0">Quantidade: {{ quantidade }}</h6>
+</div>
+
+{% if quantidade != 0 %}
+    <table class="table">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">Nome Completo</th>
+                <th scope="col">Username</th>
+                <th scope="col">Tipo</th>
+                <th scope="col" class="text-center">Ação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in perfil %}
+            <tr>
+                <td>{{i.nome_completo}}</td>
+                <td>{{i.user}}</td>
+                <td>{% if i.adm %} Adiministrador {% else %} Funcionário {% endif %}</td>
+                <td class="text-center">
+                    <a href="{% url 'atualizar' i.id %}" class="btn btn-sm btn-success px-3">Editar</a>
+                    <a href="{% url 'tornar_adm' i.id%}" class="btn btn-sm btn-warning" onclick="return confirmarAdm('{{ i.nome_completo }}');">Permição de Adm</a>
+                    <a href="{% url 'retirar_adm' i.id%}" class="btn btn-sm btn-danger" onclick="return confirmarRemoverAdm('{{ i.nome_completo }}');">Tirar permição de Adm</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <div class="text-center">
+        <hr>
+        <i class="bi bi-chat-left-dots fs-1 text-danger"></i>
+        <p>Nenhum funcionários cadastrado</p>
+    </div>
+{% endif %}
+
+<script>
+    function confirmarAdm(nome) {
+        return confirm(`Tem certeza que deseja tornar o "${nome}" em administrador?`);
+    }
+    function confirmarRemoverAdm(nome) {
+        return confirm(`Tem certeza que deseja remover a permição de administrador do "${nome}"?`);
+    }
+</script>
+
+{% endblock %}

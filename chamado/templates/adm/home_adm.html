@@ -15,10 +15,12 @@
     </div>
 {% endif %}
 
-<a href="{% url 'ver_chamados' %}" class="btn btn-primary">Chamados</a>
-<a href="{}" class="btn btn-info">Chamados não iniciados</a>
-<a href="{}" class="btn btn-warning">Chamados em andamento</a>
-<a href="{}" class="btn btn-success">Chamados finalizados</a>
-<a href="{}" class="btn btn-danger">Chamados cancelados</a>
+<form method="get" action="">
+    <button type="submit" class="btn btn-primary">Chamados</button>
+    <button type="submit" name="status" value="nao_iniciado" class="btn btn-info">Não iniciado</button>
+    <button type="submit" name="status" value="em_andamento" class="btn btn-warning">Em andamento</button>
+    <button type="submit" name="status" value="finalizado" class="btn btn-success">Finalizado</button>
+    <button type="submit" name="status" value="cancelado" class="btn btn-danger">Cancelado</button>
+</form>
 
 {% endblock %}

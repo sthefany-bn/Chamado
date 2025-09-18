@@ -1,0 +1,36 @@
+{% extends "modelo.html" %}
+
+{% block title %}Editar{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+    <div>
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+{% endif %}
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card p-4" style="max-width: 480px; width: 100%;">
+        <h2 class="fw-bold mb-4 text-center">Editando Funcionário</h2>
+        <form action="{% url 'atualizar' perfil.id%}" method="POST">{% csrf_token %}
+            <div class="mb-3">
+                <label class="form-label">Nome completo</label>
+                <input type="text" name="nome_completo" class="form-control" value="{{ perfil.nome_completo }}" placeholder="Digite o nome" required>
+            </div>
+            <div class="mb-4">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" value="{{ perfil.user.username }}" placeholder="Digite o nome" required>
+            </div>
+            <div class="d-flex justify-content-between">
+                <button type="submit" class="btn btn-success px-3">Atualizar</button>
+                <a href="{% url 'ver_funcionarios' %}" class="btn btn-danger px-3">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

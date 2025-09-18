@@ -32,7 +32,7 @@
       </div>
       {% endif %}
       <div class="text-center">
-        <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+        <ul class="nav nav-pills nav-justified mb-3">
           <li class="nav-item">
             <a class="nav-link active me-1" href="{% url 'login' %}">Login</a>
           </li>
@@ -45,15 +45,14 @@
         <div class="w-50">
           <h2 class="fw-bold mb-4 text-center">Login</h2>
           <form action="{% url 'login' %}" method="POST">{% csrf_token %}
-            <label for="">Username:</label>
+            <label>Username:</label>
             <input type="text" name="username" class="form-control" placeholder="Digite seu username">
             <br>
-            <label for="">Senha:</label>
+            <label>Senha:</label>
             <input type="password" name="senha" class="form-control">
             <br>
             <div class="d-grid gap-2 text-center">
               <button type="submit" class="btn btn-success">Logar</button>
-              <a href="{% url 'login_adm' %}">login de administrador</a>
             </div>
           </form>
         </div>

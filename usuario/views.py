@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib import auth
@@ -29,7 +29,24 @@ def cadastrar(request):
         messages.success(request, 'Cadastro realizado com sucesso!')
         return redirect('/usuario/login')
         
-
+def atualizar(request, id):
+    perfil = get_object_or_404(Perfil, id=id)
+    
+    if request.method == "GET":
+        return render(request, 'adm/editar_funcionario.html', {'perfil': perfil})
+    
+    elif request.method == "POST":
+        nome_completo = request.POST.get('nome_completo')
+        username = request.POST.get('username')
+        
+        perfil.nome_completo = nome_completo
+        perfil.user.username = username 
+        perfil.user.save()
+        perfil.save()
+        
+        messages.success(request, 'Usuário atualizado com sucesso!')
+        return redirect('ver_funcionarios')
+    
 
 def login(request):
     if request.method == "GET":
@@ -48,31 +65,6 @@ def login(request):
         else:
             auth.login(request, usuario)
             return redirect('/')
-
-def login_adm(request):
-    if request.method == "GET":
-        if request.user.is_authenticated:
-            return redirect('/')
-        return render(request, 'login_adm.html')
-
-    elif request.method == "POST":
-        username = request.POST.get('username')
-        senha = request.POST.get('senha')
-
-        usuario = auth.authenticate(username=username, password=senha)
-
-        if not usuario:
-            messages.error(request, 'Username ou senha inválidos!')
-            return redirect('/usuario/login_adm')
-
-        if not usuario.perfil.adm:
-            messages.error(request, 'Este usuário não é administrador.')
-            return redirect('/usuario/login_adm')
-
-        auth.login(request, usuario)
-        return redirect('/home_adm')
-
-        
 
 def sair(request):
     auth.logout(request)

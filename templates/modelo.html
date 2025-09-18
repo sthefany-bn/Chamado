@@ -14,8 +14,27 @@
     <header>
         <nav class="navbar bg-primary">
             <div class="container-fluid">
-                <a href="{% url 'ver_meus_chamados' %}" class="navbar-brand fw-bold text-white">Chamados</a>
-                <a href="{% url 'sair' %}" class="btn btn-light fw-bold me-1" type="button">Sair</a>
+                <a href="{% url 'ver_meus_chamados' %}" class="navbar-brand fw-bold text-white">
+                    Chamados
+                    {% if request.user.perfil.adm %}
+                        - Usuario Administrador
+                    {% endif %}
+                </a>
+                <div class="d-flex">
+                    {% if request.user.perfil.adm %}
+                        <div class="dropdown">
+                            <a href="" class="btn btn-light fw-bold dropdown-toggle me-1" type="button" data-bs-toggle="dropdown"
+                                aria-expanded="false">Ações Adms</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'ver_chamados' %}">Home</a></li>
+                                <li><a class="dropdown-item" href="{% url 'ver_funcionarios' %}">Ver funcionarios</a></li>
+                                <li><a class="dropdown-item" href="{% url 'ver_minhas_tarefas' %}">Ver minhas tarefas</a></li>
+                                <li><a class="dropdown-item" href="{% url 'atualizar' request.user.id %}">Editar seu perfil</a></li>
+                            </ul>
+                        </div>
+                    {% endif %}
+                    <a href="{% url 'sair' %}" class="btn btn-light fw-bold me-1" type="button">Sair</a>
+                </div>
             </div>
         </nav>
     </header>
@@ -23,7 +42,7 @@
         <div class="container">
             <br><br>
             {% block content %}
-            Conteúdo
+                Conteúdo
             {% endblock %}
         </div>
     </main>

@@ -32,7 +32,7 @@
             </div>
             {% endif %}
             <div class="text-center">
-                <ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+                <ul class="nav nav-pills nav-justified mb-3">
                     <li class="nav-item">
                         <a class="nav-link bg-light me-1" href="{% url 'login' %}">Login</a>
                     </li>
@@ -45,16 +45,16 @@
                 <div class="w-50">
                     <h2 class="fw-bold mb-4 text-center">Cadastro</h2>
                     <form action="{% url 'cadastrar' %}" method="POST">{% csrf_token %}
-                        <label for="">Nome completo:</label>
+                        <label>Nome completo:</label>
                         <input type="text" name="nome" class="form-control" placeholder="Digite seu nome completo">
                         <br>
-                        <label for="">Username:</label>
+                        <label>Username:</label>
                         <input type="text" name="username" class="form-control" placeholder="Crie seu username">
                         <br>
-                        <label for="">Senha:</label>
+                        <label>Senha:</label>
                         <input type="password" name="senha" class="form-control" placeholder="Crie uma senha segura">
                         <br>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-grid gap-2 text-center">
                             <button type="submit" class="btn btn-success">Cadastrar</button>
                         </div>
                     </form>

@@ -1,6 +1,6 @@
 {% extends "modelo.html" %}
 
-{% block title %}Chamados{% endblock %}
+{% block title %}Meus Chamados{% endblock %}
 
 {% block content %}
 
@@ -15,15 +15,12 @@
     </div>
 {% endif %}
 
-<h1 class="fw-bold">Chamados</h1>
+<h1 class="fw-bold">Tarefas</h1>
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h6 class="mb-0">Quantidade: {{ quantidade }}</h6>
-    
-    <a href="{% url 'fazer_chamado' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-1"></i>
-        Novo
-    </a>
+    <h6 class="m-1">Quantidade: {{ quantidade }}</h6>
 </div>
+
+<!--dividir os ativos, cancelados e finalizados-->
 
 {% if quantidade != 0 %}
     <table class="table">
@@ -31,19 +28,19 @@
             <tr>
                 <th scope="col">Titulo</th>
                 <th scope="col">Data do pedido</th>
-                <th scope="col">Descrição</th>
                 <th scope="col">Status</th>
-                <th scope="col">Autor</th>
+                <th scope="col" class="text-center">Ações</th>
             </tr>
         </thead>
         <tbody>
             {% for i in chamados %}
             <tr>
                 <td>{{i.titulo}}</td>
-                <td>{{i.data|date:'d/m/Y'}}</td>
-                <td>{{i.descricao}}</td>
-                <td>{{i.status}}</td>
-                <td>{{i.autor}}</td>
+                <td>{{i.data|date:'d/m/Y - H:i'}}</td>
+                <td>{{i.get_status_display}}</td> <!--arrumar para deixar colorido-->
+                <td class="text-center">
+                    <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -52,8 +49,8 @@
     <div class="text-center">
         <hr>
         <i class="bi bi-chat-left-dots fs-1 text-danger"></i>
-        <p>Nenhum chamado cadastrada</p>
-        <a class="btn btn-success" href="{% url 'fazer_chamado' %}">Fazer chamado</a>
+        <p>Nenhum chamado cadastrada para você</p>
     </div>
 {% endif %}
+
 {% endblock %}

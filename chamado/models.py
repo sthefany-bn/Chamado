@@ -14,10 +14,11 @@ class Chamado(models.Model):
     data = models.DateTimeField()
     status = models.CharField(max_length=20, choices=STATUS, default="nao_iniciado")
     descricao = models.TextField()
-    autor = models.ForeignKey(Perfil, on_delete=models.PROTECT)
+    autor = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='autor')
+    responsavel = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='responsavel')
 
     def __str__(self):
         return self.titulo
     
     class Meta:
-        ordering = ["data"] 
+        ordering = ["-data"] 
