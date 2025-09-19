@@ -3,18 +3,6 @@
 {% block title %}Chamados{% endblock %}
 
 {% block content %}
-
-{% if messages %}
-    <div>
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-    </div>
-{% endif %}
-
 <div class="text-center">
     <form method="get" action="">
         <button type="submit" class="btn btn-primary px-5 me-2">Chamados</button>
@@ -27,26 +15,18 @@
 
 <br>
 
-<h1 class="fw-bold">Chamados</h1>
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h6 class="mb-0">Quantidade: {{ quantidade }}</h6>
-    
-    <a href="{% url 'fazer_chamado' %}" class="btn btn-primary">
-        <i class="bi bi-plus-circle me-1"></i>
-        Novo
-    </a>
-</div>
+<h6 class="mb-4 ms-1">Quantidade: {{ quantidade }}</h6>
 
 {% if quantidade != 0 %}
-    <table class="table">
+    <table class="table table-hover">
         <thead class="table-dark">
             <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Data do pedido</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Responsável</th>
-                <th scope="col">Status</th>
-                <th scope="col">Autor</th>
+                <th>Titulo</th>
+                <th>Data do pedido</th>
+                <th>Responsável</th>
+                <th>Status</th>
+                <th>Autor</th>
+                <th class="text-center">Ações</th>
             </tr>
         </thead>
         <tbody>
@@ -54,10 +34,12 @@
             <tr>
                 <td>{{i.titulo}}</td>
                 <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                <td>{{i.descricao}}</td>
                 <td>{{i.responsavel}}</td>
                 <td>{{i.get_status_display}}</td> <!--arrumar para deixar colorido-->
                 <td>{{i.autor}}</td>
+                <td class="text-center">
+                    <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
+                </td>
             </tr>
             {% endfor %}
         </tbody>

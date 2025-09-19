@@ -64,6 +64,10 @@ def login(request):
             return redirect('/usuario/login')
         else:
             auth.login(request, usuario)
+
+        if request.user.perfil.adm == True:
+            return redirect('ver_chamados')
+        else:
             return redirect('/')
 
 def sair(request):

@@ -73,9 +73,13 @@ def ver_meus_chamados(request):
 @login_required(login_url='/usuario/login/')
 def cancelar_chamado(request, id):
     chamado = get_object_or_404(Chamado, id=id)
-    chamado.status = 'cancelado'
-    chamado.save()
-    return redirect('ver_meus_chamados')
+    if chamado.status == 'nao_iniciado':
+        chamado.status = 'cancelado'
+        chamado.save()
+        return redirect('ver_meus_chamados')
+    else:
+        messages.error(request, 'Esse chamado não pode ser cancelado, pois ele já foi iniciado')
+        return redirect('ver_meus_chamados')
 
 #ADMs
 @login_required(login_url='/usuario/login/')

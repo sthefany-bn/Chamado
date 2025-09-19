@@ -3,18 +3,6 @@
 {% block title %}Meus Chamados{% endblock %}
 
 {% block content %}
-
-{% if messages %}
-    <div>
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-            {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-        {% endfor %}
-    </div>
-{% endif %}
-
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="fw-bold mb-0">Chamados de <span class="text-primary">{{ perfil.nome_completo }}</span></h1>
     <a href="{% url 'fazer_chamado' %}" class="btn btn-primary">
@@ -30,15 +18,14 @@
             <i class="bi bi-lightning-charge-fill me-2 fs-3 text-warning"></i>
             <h3 class="fw-bold mb-0">Ativos</h3>
         </div>
-        <table class="table">
+        <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Titulo</th>
-                    <th scope="col">Data do pedido</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Responsável</th>
-                    <th scope="col">Status</th>
-                    <th scope="col" class="text-center">Ação</th>
+                    <th>Titulo</th>
+                    <th>Data do pedido</th>
+                    <th>Responsável</th>
+                    <th>Status</th>
+                    <th class="text-center">Ação</th>
                 </tr>
             </thead>
             <tbody>
@@ -47,11 +34,11 @@
                         <tr>
                             <td>{{i.titulo}}</td>
                             <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                            <td>{{i.descricao}}</td>
                             <td>{{i.responsavel}}</td>
                             <td><span class="badge bg-warning text-dark">{{ i.get_status_display }}</span></td>
                             <td class="text-center">
                                 <a href="{% url 'editar_chamado' i.id %}" class="btn btn-sm btn-success">Editar</a>
+                                <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>                                
                                 <form action="{% url 'cancelar_chamado' i.id %}" method="post" class="d-inline"
                                     onsubmit="return confirmarExclusao('{{ i.titulo}}');">{% csrf_token %}
                                     <button type="submit" class="btn btn-sm btn-danger">Cancelar</button>
@@ -77,14 +64,13 @@
             <i class="bi bi-clipboard2-check me-2 fs-3 text-success"></i>
             <h3 class="fw-bold mb-0">Finalizados</h3>
         </div> 
-        <table class="table">
+        <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Titulo</th>
-                    <th scope="col">Data do pedido</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Responsável</th>
-                    <th scope="col">Status</th>
+                    <th>Titulo</th>
+                    <th>Data do pedido</th>
+                    <th>Responsável</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,7 +79,6 @@
                         <tr>
                             <td>{{i.titulo}}</td>
                             <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                            <td>{{i.descricao}}</td>
                             <td>{{i.responsavel}}</td>
                             <td><span class="badge bg-success">{{ i.get_status_display }}</span></td>
                         </tr>
@@ -109,14 +94,13 @@
             <i class="bi bi-x-octagon-fill me-2 fs-3 text-danger"></i>
             <h3 class="fw-bold mb-0">Cancelados</h3>
         </div>
-        <table class="table">
+        <table class="table table-hover">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Titulo</th>
-                    <th scope="col">Data do pedido</th>
-                    <th scope="col">Descrição</th>
-                    <th scope="col">Responsável</th>
-                    <th scope="col">Status</th>
+                    <th>Titulo</th>
+                    <thido</th>
+                    <th>Responsável</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -125,7 +109,6 @@
                         <tr class="text-decoration-line-through text-muted">
                             <td>{{i.titulo}}</td>
                             <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                            <td>{{i.descricao}}</td>
                             <td>{{i.responsavel}}</td>
                             <td><span class="badge bg-danger">{{ i.get_status_display }}</span></td>
                         </tr>
