@@ -23,9 +23,9 @@
             <tr>
                 <th>Titulo</th>
                 <th>Data do pedido</th>
-                <th>Responsável</th>
-                <th>Status</th>
                 <th>Autor</th>
+                <th>Status</th>
+                <th>Responsável</th>
                 <th class="text-center">Ações</th>
             </tr>
         </thead>
@@ -34,9 +34,9 @@
             <tr>
                 <td>{{i.titulo}}</td>
                 <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                <td>{{i.responsavel}}</td>
-                <td>{{i.get_status_display}}</td> <!--arrumar para deixar colorido-->
                 <td>{{i.autor}}</td>
+                <td>{{i.get_status_display}}</td>
+                <td>{{i.responsavel}}</td>
                 <td class="text-center">
                     <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
                 </td>

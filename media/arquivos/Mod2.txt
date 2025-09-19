@@ -1,0 +1,7 @@
+Alterações a serem feitas:
+
+
+Função de desativar um usuario (Usuario não pode ser deletado) - Falta ficar explícito nos detalhes que o usuário está desativado.
+O responsável deve ter a opção de voltar o chamado pra fila - ok
+Deixar as páginas mais uniformes - ok
+Identificação dos chamados e busca - ok

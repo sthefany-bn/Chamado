@@ -8,3 +8,6 @@ class Perfil(models.Model):
 
     def __str__(self):
         return f"{self.nome_completo}"
+    
+    class Meta:
+        ordering = ["nome_completo"]

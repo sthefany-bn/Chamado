@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Chamado
+from .models import Chamado, Arquivo
 from usuario.models import Perfil
 from datetime import datetime
 
@@ -17,7 +17,8 @@ def fazer_chamado(request):
         descricao = request.POST.get('descricao')
         autor = request.user.perfil
         responsavel_id = request.POST.get('responsavel')
-        
+        arquivos = request.FILES.getlist('arquivos')
+       
         responsavel = get_object_or_404(Perfil, id= responsavel_id)
         
         chamado = Chamado(
@@ -30,8 +31,12 @@ def fazer_chamado(request):
         )
         chamado.save()
         
+        for arquivo in arquivos:
+            Arquivo.objects.create(arquivo=arquivo, chamado=chamado)
+        
         messages.success(request, 'Chamado enviado com sucesso!')
         return redirect('ver_meus_chamados')
+
 
 @login_required(login_url='/usuario/login/')
 def editar_chamado(request, id):
@@ -41,9 +46,11 @@ def editar_chamado(request, id):
         return render(request, 'editar_chamado.html', {'chamados': chamado, 'perfil': perfil})
     
     elif request.method == "POST":
+        print('Post')
         titulo = request.POST.get('titulo')
         descricao = request.POST.get('descricao')
         responsavel_id = request.POST.get('responsavel')
+        arquivos = request.FILES.getlist('arquivos')
         
         responsavel = get_object_or_404(Perfil, id= responsavel_id)
         
@@ -52,8 +59,12 @@ def editar_chamado(request, id):
         chamado.responsavel = responsavel
         chamado.save()
         
+        for arquivo in arquivos:
+            Arquivo.objects.create(arquivo=arquivo, chamado=chamado)
+        
         messages.success(request, 'Chamado atualizado com sucesso!')
         return redirect('ver_meus_chamados')
+
 
 @login_required(login_url='/usuario/login/')
 def ver_meus_chamados(request):
@@ -70,6 +81,7 @@ def ver_meus_chamados(request):
                                                       'qtd_finalizados': finalizados,
                                                       'qtd_cancelados': cancelados})
 
+
 @login_required(login_url='/usuario/login/')
 def cancelar_chamado(request, id):
     chamado = get_object_or_404(Chamado, id=id)
@@ -80,6 +92,29 @@ def cancelar_chamado(request, id):
     else:
         messages.error(request, 'Esse chamado não pode ser cancelado, pois ele já foi iniciado')
         return redirect('ver_meus_chamados')
+
+
+@login_required(login_url='/usuario/login/')
+def remover_arquivo(request, id):
+    arquivo = get_object_or_404(Arquivo,id=id)
+    arquivo.delete()
+    messages.success(request, 'Arquivo deletado com sucesso!')
+    
+    #Redireciona para a página anterior, se não para ver_meus_chamados
+    referer = request.META.get('HTTP_REFERER')
+    if referer:
+        return redirect(referer)
+    else:
+        return redirect('ver_meus_chamados')
+
+
+@login_required(login_url='/usuario/login/')
+def ver_detalhes(request, id):
+    chamado = get_object_or_404(Chamado, id=id)
+    arquivos = chamado.arquivo.all()
+    return render(request, 'ver_detalhes.html', {'chamados': chamado, 'arquivos': arquivos})
+
+
 
 #ADMs
 @login_required(login_url='/usuario/login/')
@@ -92,6 +127,7 @@ def ver_chamados(request):
     qtd = chamado.count()
     return render(request, 'adm/ver_chamado.html', {'chamados': chamado, 'quantidade': qtd})
 
+
 @login_required(login_url='/usuario/login/')
 def ver_funcionarios(request):
     perfil = Perfil.objects.exclude(user=request.user)
@@ -101,6 +137,7 @@ def ver_funcionarios(request):
     qtd = perfil.count()
     return render(request, 'adm/ver_funcionarios.html', {'perfil': perfil, 'quantidade': qtd})
 
+
 @login_required(login_url='/usuario/login/')
 def tornar_adm(request, id):
     perfil = get_object_or_404(Perfil, id=id)
@@ -108,6 +145,7 @@ def tornar_adm(request, id):
     perfil.save()
     messages.success(request, f'Usuário {perfil.nome_completo} agora é um administrador!')
     return redirect('ver_funcionarios')
+
 
 @login_required(login_url='/usuario/login/')
 def retirar_adm(request, id):
@@ -117,14 +155,20 @@ def retirar_adm(request, id):
     messages.success(request, f'Usuário {perfil.nome_completo} não é mais um administrador!')
     return redirect('ver_funcionarios')
 
+
 @login_required(login_url='/usuario/login/')
 def ver_minhas_tarefas(request):
     perfil = get_object_or_404(Perfil, user=request.user)
     chamado = Chamado.objects.filter(responsavel=perfil.id)
+    chamado = chamado.exclude(status='cancelado')
     qtd = chamado.count()
     return render(request, 'adm/ver_minhas_tarefas.html', {'chamados': chamado, 'quantidade': qtd})
 
+
 @login_required(login_url='/usuario/login/')
-def ver_detalhes(request, id):
+def cfc(request, id, status):
     chamado = get_object_or_404(Chamado, id=id)
-    return render(request, 'adm/ver_detalhes.html', {'chamados': chamado})
+    chamado.status = status
+    chamado.save()
+    return redirect('ver_minhas_tarefas')
+

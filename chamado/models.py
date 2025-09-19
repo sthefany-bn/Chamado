@@ -22,3 +22,10 @@ class Chamado(models.Model):
     
     class Meta:
         ordering = ["-data"] 
+
+class Arquivo(models.Model):
+    arquivo = models.FileField(upload_to='arquivos')
+    chamado = models.ForeignKey(Chamado, on_delete=models.CASCADE, related_name='arquivo')
+    
+    def __str__(self):
+        return self.arquivo.name

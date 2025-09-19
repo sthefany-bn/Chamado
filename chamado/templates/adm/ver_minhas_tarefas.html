@@ -3,7 +3,7 @@
 {% block title %}Meus Chamados{% endblock %}
 
 {% block content %}
-<h1 class="fw-bold">Tarefas</h1>
+<h1 class="fw-bold">Tarefas ativas</h1>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h6 class="m-1">Quantidade: {{ quantidade }}</h6>
 </div>
@@ -20,14 +20,42 @@
         </thead>
         <tbody>
             {% for i in chamados %}
-            <tr>
-                <td>{{i.titulo}}</td>
-                <td>{{i.data|date:'d/m/Y - H:i'}}</td>
-                <td>{{i.get_status_display}}</td> <!--arrumar para deixar colorido-->
-                <td class="text-center">
-                    <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
-                </td>
-            </tr>
+                <tr>
+                    <td>{{i.titulo}}</td>
+                    <td>{{i.data|date:'d/m/Y - H:i'}}</td>
+                    <td>
+                        {% if i.status == 'finalizado' %}
+                            <span class="badge bg-success">{{i.get_status_display}}</span>
+                        {% elif i.status == 'em_andamento' %}
+                            <span class="badge bg-warning text-black">{{i.get_status_display}}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{i.get_status_display}}</span>
+                        {% endif %}
+                    </td>
+                    <td class="text-center">
+                        <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-warning px-3">
+                                <a href="{% url 'cfc' i.id 'em_andamento' %}" class="text-black text-decoration-none"
+                                    onclick="return confirmarIniciar('{{ i.titulo }}');">
+                                    Iniciar
+                                </a>
+                            </button>
+                            <button class="btn btn-sm btn-success">
+                                <a href="{% url 'cfc' i.id 'finalizado' %}" class="text-white text-decoration-none"
+                                    onclick="return confirmarFinalizar('{{ i.titulo }}');">
+                                    Finalizar
+                                </a>
+                            </button>
+                            <button class="btn btn-sm btn-danger">
+                                <a href="{% url 'cfc' i.id 'cancelado' %}" class="text-white text-decoration-none"
+                                    onclick="return confirmarCancelar('{{ i.titulo }}');">
+                                    Cancelar
+                                </a>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             {% endfor %}
         </tbody>
     </table>
@@ -38,5 +66,17 @@
         <p>Nenhum chamado cadastrada para você</p>
     </div>
 {% endif %}
+
+<script>
+    function confirmarIniciar(nome) {
+        return confirm(`Tem certeza que deseja iniciar a tarefa "${nome}"?`);
+    }
+    function confirmarFinalizar(nome) {
+        return confirm(`Tem certeza que deseja finalizar a tarefa "${nome}"?`);
+    }
+    function confirmarCancelar(nome) {
+        return confirm(`Tem certeza que deseja cancelar a tarefa "${nome}"?`);
+    }
+</script>
 
 {% endblock %}

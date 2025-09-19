@@ -5,6 +5,7 @@ from django.contrib import auth
 from .models import Perfil
 
 def cadastrar(request):
+        
     if request.method == "GET":
         if request.user.is_authenticated:
             return redirect('/')
@@ -72,4 +73,5 @@ def login(request):
 
 def sair(request):
     auth.logout(request)
+    messages.success(request, 'Logout realizado com sucesso!')
     return redirect('/usuario/login')
