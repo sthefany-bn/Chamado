@@ -5,7 +5,6 @@ from django.contrib import auth
 from .models import Perfil
 
 def cadastrar(request):
-        
     if request.method == "GET":
         if request.user.is_authenticated:
             return redirect('/')
@@ -29,7 +28,8 @@ def cadastrar(request):
         
         messages.success(request, 'Cadastro realizado com sucesso!')
         return redirect('/usuario/login')
-        
+
+      
 def atualizar(request, id):
     perfil = get_object_or_404(Perfil, id=id)
     
@@ -47,7 +47,7 @@ def atualizar(request, id):
         
         messages.success(request, 'Usuário atualizado com sucesso!')
         return redirect('ver_funcionarios')
-    
+
 
 def login(request):
     if request.method == "GET":
@@ -70,6 +70,7 @@ def login(request):
             return redirect('ver_chamados')
         else:
             return redirect('/')
+
 
 def sair(request):
     auth.logout(request)

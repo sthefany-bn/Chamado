@@ -10,7 +10,6 @@
         Novo
     </a>
 </div>
-<hr>
 
 {% if qtd_ativos or qtd_cancelados or qtd_finalizados%}
     {% if qtd_ativos %}
@@ -35,7 +34,13 @@
                             <td>{{i.titulo}}</td>
                             <td>{{i.data|date:'d/m/Y - H:i'}}</td>
                             <td>{{i.responsavel}}</td>
-                            <td><span class="badge bg-warning text-black">{{ i.get_status_display }}</span></td>
+                            <td>
+                                {% if i.status == 'em_andamento' %}
+                                    <span class="badge bg-warning text-black">{{ i.get_status_display }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ i.get_status_display }}</span>
+                                {% endif %}
+                            </td>
                             <td class="text-center">
                                 <a href="{% url 'editar_chamado' i.id %}" class="btn btn-sm btn-success">Editar</a>
                                 <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>                                
@@ -128,6 +133,7 @@
     
 {% else %}
     <div class="text-center">
+        <hr><br>
         <i class="bi bi-inbox-fill fs-1 text-secondary"></i>
         <p>Nenhum chamado cadastrado</p>
         <a class="btn btn-sm btn-success" href="{% url 'fazer_chamado' %}">Fazer chamado</a>

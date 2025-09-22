@@ -6,7 +6,7 @@
 <div class="text-center">
     <form method="get" action="">
         <button type="submit" class="btn btn-primary px-5 me-2">Chamados</button>
-        <button type="submit" name="status" value="nao_iniciado" class="btn btn-info px-5 me-2">Não iniciado</button>
+        <button type="submit" name="status" value="nao_iniciado" class="btn btn-secondary px-5 me-2">Não iniciado</button>
         <button type="submit" name="status" value="em_andamento" class="btn btn-warning px-5 me-2">Em andamento</button>
         <button type="submit" name="status" value="finalizado" class="btn btn-success px-5 me-2">Finalizado</button>
         <button type="submit" name="status" value="cancelado" class="btn btn-danger px-5">Cancelado</button>
@@ -35,7 +35,19 @@
                 <td>{{i.titulo}}</td>
                 <td>{{i.data|date:'d/m/Y - H:i'}}</td>
                 <td>{{i.autor}}</td>
-                <td>{{i.get_status_display}}</td>
+                <td>
+                    <p>
+                        {% if i.status == 'finalizado' %}
+                            <span class="badge bg-success">{{i.get_status_display}}</span>
+                        {% elif i.status == 'em_andamento' %}
+                            <span class="badge bg-warning text-black">{{i.get_status_display}}</span>
+                        {% elif i.status == 'cancelado' %}
+                            <span class="badge bg-danger">{{i.get_status_display}}</span>
+                        {% else %}
+                            <span class="badge bg-secondary">{{i.get_status_display}}</span>
+                        {% endif %}
+                    </p>
+                </td>
                 <td>{{i.responsavel}}</td>
                 <td class="text-center">
                     <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
@@ -46,10 +58,9 @@
     </table>
 {% else %}
     <div class="text-center">
-        <hr>
+        <hr><br>
         <i class="bi bi-chat-left-dots fs-1 text-danger"></i>
-        <p>Nenhum chamado cadastrada</p>
-        <a class="btn btn-success" href="{% url 'fazer_chamado' %}">Fazer chamado</a>
+        <p>Nenhum chamado</p>
     </div>
 {% endif %}
 {% endblock %}

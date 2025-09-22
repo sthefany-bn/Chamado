@@ -32,32 +32,32 @@
                         <ul class="dropdown-menu">
                             <li>
                                 <a class="dropdown-item" href="{% url 'ver_chamados' %}">
-                                    <i class="bi bi-card-list me-2"></i>Todos chamados
+                                    <i class="bi bi-card-list me-2 text-info"></i>Todos chamados
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'ver_funcionarios' %}">
-                                    <i class="bi bi-people-fill me-2"></i>Funcionários
+                                    <i class="bi bi-people-fill me-2 text-warning"></i>Funcionários
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'ver_minhas_tarefas' %}">
-                                    <i class="bi bi-clipboard2-check-fill me-2"></i>Minhas tarefas
+                                    <i class="bi bi-clipboard2-check-fill me-2 text-success"></i>Minhas tarefas
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'ver_meus_chamados' %}">
-                                    <i class="bi bi-person-lines-fill me-2"></i>Meus chamados
+                                    <i class="bi bi-person-lines-fill me-2 text-primary"></i>Meus chamados
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'fazer_chamado' %}">
-                                    <i class="bi bi-plus-circle me-2"></i> Criar chamado
+                                    <i class="bi bi-plus-circle me-2 text-black"></i> Criar chamado
                                 </a>
                             </li>
                             <li>
                                 <a class="dropdown-item" href="{% url 'atualizar' request.user.id %}">
-                                    <i class="bi bi-pencil-square me-2"></i>Editar meu perfil
+                                    <i class="bi bi-pencil-square me-2 text-danger"></i>Editar meu perfil
                                 </a>
                             </li>
                         </ul>

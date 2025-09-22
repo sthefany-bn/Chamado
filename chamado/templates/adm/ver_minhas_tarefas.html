@@ -36,19 +36,19 @@
                         <a href="{% url 'ver_detalhes' i.id%}" class="btn btn-sm btn-primary px-3">Detalhes</a>
                         <div class="btn-group">
                             <button class="btn btn-sm btn-warning px-3">
-                                <a href="{% url 'cfc' i.id 'em_andamento' %}" class="text-black text-decoration-none"
+                                <a href="{% url 'ifc' i.id 'em_andamento' %}" class="text-black text-decoration-none"
                                     onclick="return confirmarIniciar('{{ i.titulo }}');">
                                     Iniciar
                                 </a>
                             </button>
                             <button class="btn btn-sm btn-success">
-                                <a href="{% url 'cfc' i.id 'finalizado' %}" class="text-white text-decoration-none"
+                                <a href="{% url 'ifc' i.id 'finalizado' %}" class="text-white text-decoration-none"
                                     onclick="return confirmarFinalizar('{{ i.titulo }}');">
                                     Finalizar
                                 </a>
                             </button>
                             <button class="btn btn-sm btn-danger">
-                                <a href="{% url 'cfc' i.id 'cancelado' %}" class="text-white text-decoration-none"
+                                <a href="{% url 'ifc' i.id 'cancelado' %}" class="text-white text-decoration-none"
                                     onclick="return confirmarCancelar('{{ i.titulo }}');">
                                     Cancelar
                                 </a>
@@ -61,7 +61,7 @@
     </table>
 {% else %}
     <div class="text-center">
-        <hr>
+        <hr><br>
         <i class="bi bi-chat-left-dots fs-1 text-danger"></i>
         <p>Nenhum chamado cadastrada para você</p>
     </div>

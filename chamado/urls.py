@@ -14,5 +14,5 @@ urlpatterns = [
     path('tornar_adm/<int:id>', views.tornar_adm, name="tornar_adm"),
     path('retirar_adm/<int:id>', views.retirar_adm, name="retirar_adm"),
     path('ver_minhas_tarefas/', views.ver_minhas_tarefas, name="ver_minhas_tarefas"),
-    path('cfc/<int:id>/<str:status>', views.cfc, name="cfc"),   
+    path('ifc/<int:id>/<str:status>', views.ifc, name="ifc"),   #iniciar, finalizar, cancelar
 ]

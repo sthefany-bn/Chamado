@@ -1,7 +1,6 @@
 from django.db import models
 from usuario.models import Perfil
 
-# Create your models here.
 class Chamado(models.Model):
     STATUS = (
         ('nao_iniciado', 'Não iniciado'),
@@ -21,11 +20,12 @@ class Chamado(models.Model):
         return self.titulo
     
     class Meta:
-        ordering = ["-data"] 
+        ordering = ["-data"]
 
 class Arquivo(models.Model):
     arquivo = models.FileField(upload_to='arquivos')
     chamado = models.ForeignKey(Chamado, on_delete=models.CASCADE, related_name='arquivo')
-    
+
     def __str__(self):
         return self.arquivo.name
+    
