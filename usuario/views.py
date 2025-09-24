@@ -34,6 +34,7 @@ def atualizar(request, id):
     perfil = get_object_or_404(Perfil, id=id)
     
     if request.method == "GET":
+        print(request.user.perfil.adm)
         return render(request, 'adm/editar_funcionario.html', {'perfil': perfil})
     
     elif request.method == "POST":
@@ -45,8 +46,12 @@ def atualizar(request, id):
         perfil.user.save()
         perfil.save()
         
-        messages.success(request, 'Usuário atualizado com sucesso!')
-        return redirect('ver_funcionarios')
+        if request.user.perfil.adm:
+            messages.success(request, 'Usuário atualizado com sucesso!')
+            return redirect('ver_funcionarios')
+        else:
+            messages.success(request, 'Usuário atualizado com sucesso!')
+            return redirect('ver_meus_chamados')
 
 
 def login(request):
