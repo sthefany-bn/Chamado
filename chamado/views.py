@@ -164,10 +164,11 @@ def retirar_adm(request, id):
 @login_required(login_url='/usuario/login/')
 def ver_minhas_tarefas(request):
     perfil = get_object_or_404(Perfil, user=request.user)
-    chamado = Chamado.objects.filter(responsavel=perfil.id)
-    chamado = chamado.exclude(status='cancelado')
-    qtd = chamado.count()
-    return render(request, 'adm/ver_minhas_tarefas.html', {'chamados': chamado, 'quantidade': qtd})
+    chamado = Chamado.objects.filter(responsavel=perfil.id)    
+    chamado_ativos = chamado.filter(status__in=['nao_iniciado', 'em_andamento'])
+    chamado_inativos = chamado.filter(status__in=['cancelado', 'finalizado'])
+
+    return render(request, 'adm/ver_minhas_tarefas.html', {'chamados_ativos': chamado_ativos, 'chamados_inativos': chamado_inativos})
 
 
 @login_required(login_url='/usuario/login/')

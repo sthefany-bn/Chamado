@@ -3,57 +3,74 @@
 {% block title %}Detalhes do Chamado{% endblock %}
 
 {% block content %}
-<div class="container py-4">
-    <div class="border rounded p-4 shadow-sm bg-white">
-        <h2 class="mb-2 fw-bold">Chamado: {{ chamados.titulo }}</h2>
+<div class="container d-flex justify-content-center mb-5">
+    <div class="card p-4" style="max-width: 800px; width: 100%;">
+        <h2 class="mb-2 fw-bold">
+            <i class="bi bi-ticket-detailed-fill text-primary me-2"></i>
+            Chamado: {{ chamados.titulo }}
+        </h2>
         <div class="mb-3">
             <small class="text-muted">
+                <i class="bi bi-calendar-event me-1"></i>
                 Criado em {{ chamados.data|date:'d/m/Y - H:i' }}
             </small>
         </div>
         <hr>
         <div class="mb-3">
-            <p>Status:
+            <p class="fw-bold">Status:
                 {% if chamados.status == 'finalizado' %}
-                    <span class="badge bg-success">{{chamados.get_status_display}}</span>
+                <span class="badge bg-success">{{chamados.get_status_display}}</span>
                 {% elif chamados.status == 'em_andamento' %}
-                    <span class="badge bg-warning text-black">{{chamados.get_status_display}}</span>
+                <span class="badge bg-warning text-black">{{chamados.get_status_display}}</span>
                 {% elif chamados.status == 'cancelado' %}
-                    <span class="badge bg-danger">{{chamados.get_status_display}}</span>
+                <span class="badge bg-danger">{{chamados.get_status_display}}</span>
                 {% else %}
-                    <span class="badge bg-secondary">{{chamados.get_status_display}}</span>
+                <span class="badge bg-secondary">{{chamados.get_status_display}}</span>
                 {% endif %}
             </p>
         </div>
         <div class="mb-3">
-            <h6 class="fw-bold">Descrição:</h6>
+            <h6 class="fw-bold">
+                <i class="bi bi-file-text me-1"></i>
+                Descrição:
+            </h6>
             <p>{{ chamados.descricao }}</p>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <h6 class="fw-bold">Autor:</h6>
+                <h6 class="fw-bold">
+                    <i class="bi bi-person-fill me-1"></i>
+                    Autor:
+                </h6>
                 <p>{{ chamados.autor }}</p>
             </div>
             <div class="col-md-6">
-                <h6 class="fw-bold">Responsável:</h6>
+                <h6 class="fw-bold">
+                    <i class="bi bi-person-badge-fill me-1"></i>
+                    Responsável:
+                </h6>
                 <p>{{ chamados.responsavel }}</p>
             </div>
         </div>
         <div class="mb-3">
-            <h6 class="fw-bold mb-2">Arquivos:</h6>
+            <h6 class="fw-bold mb-3">
+                <i class="bi bi-paperclip me-1"></i>
+                Arquivos:
+            </h6>
             {% if arquivos %}
-                <div class="list-group">
-                    {% for i in arquivos %}
-                        <div class="list-group-item d-flex align-items-center gap-3">
-                            <img src="{{ i.arquivo.url }}" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">                          
-                            <a href="{{ i.arquivo.url }}" target="_blank" class="text-decoration-none">
-                                {{ i.arquivo.name|slice:'9:' }}
-                            </a>
-                        </div>
-                    {% endfor %}
+            <div class="list-group m-2">
+                {% for i in arquivos %}
+                <div class="list-group-item d-flex align-items-center gap-3">
+                    <img src="{{ i.arquivo.url }}" class="img-thumbnail"
+                        style="width: 60px; height: 60px; object-fit: cover;">
+                    <a href="{{ i.arquivo.url }}" target="_blank" class="text-decoration-none">
+                        {{ i.arquivo.name|slice:'9:' }}
+                    </a>
                 </div>
+                {% endfor %}
+            </div>
             {% else %}
-                <p class="text-muted">Nenhum arquivo anexado.</p>
+            <p class="text-muted">Nenhum arquivo anexado.</p>
             {% endif %}
         </div>
         <div class="text-end">
@@ -61,5 +78,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

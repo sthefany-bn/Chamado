@@ -12,44 +12,44 @@
     </form>
 </div>
 
-<br>
-
 <h1 class="fw-bold">Funcionários</h1>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h6 class="mb-0">Quantidade: {{ quantidade }}</h6>
 </div>
 
 {% if quantidade != 0 %}
-    <table class="table table-hover">
-        <thead class="table-dark">
-            <tr>
-                <th>Nome Completo</th>
-                <th>Username</th>
-                <th>Tipo</th>
-                <th class="text-center">Ação</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in perfil %}
-            <tr>
-                <td>{{i.nome_completo}}</td>
-                <td>{{i.user}}</td>
-                <td>{% if i.adm %} Adiministrador {% else %} Funcionário {% endif %}</td>
-                <td class="text-center">
-                    <a href="{% url 'atualizar' i.id %}" class="btn btn-sm btn-success px-3">Editar</a>
-                    <a href="{% url 'tornar_adm' i.id%}" class="btn btn-sm btn-warning" onclick="return confirmarAdm('{{ i.nome_completo }}');">Permição de Adm</a>
-                    <a href="{% url 'retirar_adm' i.id%}" class="btn btn-sm btn-danger" onclick="return confirmarRemoverAdm('{{ i.nome_completo }}');">Tirar permição de Adm</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table class="table table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>Nome Completo</th>
+            <th>Username</th>
+            <th>Tipo</th>
+            <th class="text-center">Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in perfil %}
+        <tr>
+            <td>{{i.nome_completo}}</td>
+            <td>{{i.user}}</td>
+            <td>{% if i.adm %} Adiministrador {% else %} Funcionário {% endif %}</td>
+            <td class="text-center">
+                <a href="{% url 'atualizar' i.id %}" class="btn btn-sm btn-success px-3">Editar</a>
+                <a href="{% url 'tornar_adm' i.id%}" class="btn btn-sm btn-warning"
+                    onclick="return confirmarAdm('{{ i.nome_completo }}');">Permição de Adm</a>
+                <a href="{% url 'retirar_adm' i.id%}" class="btn btn-sm btn-danger"
+                    onclick="return confirmarRemoverAdm('{{ i.nome_completo }}');">Tirar permição de Adm</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 {% else %}
-    <div class="text-center">
-        <hr><br>
-        <i class="bi bi-person-fill-slash fs-1 text-danger"></i>
-        <p>Nenhum funcionários cadastrado alem de você</p>
-    </div>
+<div class="text-center">
+    <hr><br>
+    <i class="bi bi-person-fill-slash fs-1 text-danger"></i>
+    <p>Nenhum funcionários cadastrado alem de você</p>
+</div>
 {% endif %}
 
 <script>
