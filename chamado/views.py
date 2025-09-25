@@ -4,6 +4,7 @@ from django.contrib import messages
 from .models import Chamado, Arquivo
 from usuario.models import Perfil
 from django.utils import timezone
+from .utils.decorators import adm_required
 
 @login_required(login_url='/usuario/login/')
 def fazer_chamado(request):
@@ -122,7 +123,7 @@ def ver_detalhes(request, id):
 
 
 #ADMs
-@login_required(login_url='/usuario/login/')
+@adm_required
 def ver_chamados(request):
     chamado = Chamado.objects.all()
     status = request.GET.get('status')
@@ -133,7 +134,7 @@ def ver_chamados(request):
     return render(request, 'adm/ver_chamado.html', {'chamados': chamado, 'quantidade': qtd})
 
 
-@login_required(login_url='/usuario/login/')
+@adm_required
 def ver_funcionarios(request):
     perfil = Perfil.objects.exclude(user=request.user).exclude(user__username='admin')
     tipo = request.GET.get('adm')
@@ -143,7 +144,7 @@ def ver_funcionarios(request):
     return render(request, 'adm/ver_funcionarios.html', {'perfil': perfil, 'quantidade': qtd})
 
 
-@login_required(login_url='/usuario/login/')
+@adm_required
 def tornar_adm(request, id):
     perfil = get_object_or_404(Perfil, id=id)
     perfil.adm = True
@@ -152,7 +153,7 @@ def tornar_adm(request, id):
     return redirect('ver_funcionarios')
 
 
-@login_required(login_url='/usuario/login/')
+@adm_required
 def retirar_adm(request, id):
     perfil = get_object_or_404(Perfil, id=id)
     perfil.adm = False
@@ -161,7 +162,7 @@ def retirar_adm(request, id):
     return redirect('ver_funcionarios')
 
 
-@login_required(login_url='/usuario/login/')
+@adm_required
 def ver_minhas_tarefas(request):
     perfil = get_object_or_404(Perfil, user=request.user)
     chamado = Chamado.objects.filter(responsavel=perfil.id)    
@@ -171,7 +172,7 @@ def ver_minhas_tarefas(request):
     return render(request, 'adm/ver_minhas_tarefas.html', {'chamados_ativos': chamado_ativos, 'chamados_inativos': chamado_inativos})
 
 
-@login_required(login_url='/usuario/login/')
+@adm_required
 #ifc = iniciar, finalizar, cancelar
 def ifc(request, id, status):
     chamado = get_object_or_404(Chamado, id=id)
