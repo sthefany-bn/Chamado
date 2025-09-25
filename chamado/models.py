@@ -10,7 +10,7 @@ class Chamado(models.Model):
     )
     
     titulo = models.CharField(max_length=255)
-    data = models.DateTimeField()
+    data = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=STATUS, default="nao_iniciado")
     descricao = models.TextField()
     autor = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name='autor')

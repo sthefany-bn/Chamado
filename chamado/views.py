@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Chamado, Arquivo
 from usuario.models import Perfil
-from datetime import datetime
+from django.utils import timezone
 
 @login_required(login_url='/usuario/login/')
 def fazer_chamado(request):
@@ -13,7 +13,7 @@ def fazer_chamado(request):
     elif request.method == "POST":
         try:
             titulo = request.POST.get('titulo')
-            data = datetime.now()
+            data = timezone.now()
             status = 'nao_iniciado'
             descricao = request.POST.get('descricao')
             autor = request.user.perfil
@@ -135,7 +135,7 @@ def ver_chamados(request):
 
 @login_required(login_url='/usuario/login/')
 def ver_funcionarios(request):
-    perfil = Perfil.objects.exclude(user=request.user)
+    perfil = Perfil.objects.exclude(user=request.user).exclude(user__username='admin')
     tipo = request.GET.get('adm')
     if tipo:
         perfil = perfil.filter(adm=tipo)
